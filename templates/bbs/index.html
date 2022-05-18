@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World test!!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>簡易掲示板</title>
 </head>
 <body>
-    <p>Hello World!!</p>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="comment"></textarea>
+        <input type="submit" values="送信">
+    </form>
 
-    <div>{{ content }}</div>
+    {% for topic in topics %}
+    <div>{{ topic.id }}:{{ topic.comment|linebreaksbr }}</div>
+    {% endfor %}
 </body>
 </html>
