@@ -1,19 +1,15 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from .models import Topic
+from .models import Topic, Category
 from .forms import TopicForm
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        """
-        topics = Topic.objects.all()
-        # topics = [{"id": id, "comment": comment},{"id": id, "comment": comment},...]
-        # topicsは、辞書型のリスト
-        context = {"topics": topics}
-        """
+        
         context = {}
-        context["topics"] = Topic.objects.all()
+        context["topics"] = Topic.objects.order_by("-dt")
+        context["categories"] = Category.objects.all()
 
         # renderはレンダリングした結果をレスポンスオブジェクトとして返す。
         return render(request, "bbs/index.html", context)
@@ -37,3 +33,21 @@ class IndexView(View):
 
 
 index = IndexView.as_view()
+
+
+class DeleteView(View):
+
+    def post(self, request, pk, *args, **kwargs):
+
+        topic = Topic.objects.filter(id=pk).first()
+
+        if topic:
+            print("削除")
+            topic.delete()
+        else:
+            print("データなし")
+
+        return redirect("bbs:index")
+
+delete = DeleteView.as_view()
+

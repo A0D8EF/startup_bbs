@@ -1,26 +1,41 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
     <title>簡易掲示板</title>
 </head>
 <body>
+    <form method="POST">
+        {% csrf_token %}
+        <select class="form-control" name="category">
+            <option value="" selected hidden>カテゴリ</option>
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input class="form-control" type="text" name="name" placeholder="名前">
+        <textarea class="form-control" name="comment" placeholder="コメント"></textarea>
+        <input class="form-control" type="submit" values="送信">
+    </form>
+
     {% for topic in topics %}
     <!-- topicsは、辞書型のリスト -->
     <div class="border">
+        <div>カテゴリ:{{ topic.category.name }}</div>
         <div>{{ topic.id }}:{{ topic.dt|date:"Y-m-d H:i:s" }}</div>
         <div>{{ topic.name }}</div>
         <div>{{ topic.comment|linebreaksbr }}</div>
+
+        <form action="{% url 'bbs:delete' topic.id %}" method="POST">
+            {% csrf_token %}
+            <input class="btn btn-danger" type="submit" value="削除">
+        </form>
     </div>
     {% endfor %}
-    
-    <form method="POST">
-        {% csrf_token %}
-        <textarea name="comment"></textarea>
-        <input type="submit" values="送信">
-    </form>
 
 </body>
 </html>
