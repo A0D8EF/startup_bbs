@@ -51,3 +51,31 @@ class DeleteView(View):
 
 delete = DeleteView.as_view()
 
+
+class EditView(View):
+
+    def get(self, request, pk, *args, **kwargs):
+
+        context                 = {}
+        context["topic"]        = Topic.objects.filter(id=pk).first()
+        context["categories"]   = Category.objects.all()
+
+        return render(request, "bbs/edit.html", context)
+
+    def post(self, request, pk, *args, **kwargs):
+
+        topic = Topic.objects.filter(id=pk).first()
+        form = TopicForm(request.POST, instance=topic)
+
+        if form.is_valid():
+            print("バリデーションOK")
+            form.save()
+        else:
+            print("バリデーションNG")
+            print(form.errors)
+
+        return redirect("bbs:index")
+
+edit = EditView.as_view()
+
+

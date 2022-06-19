@@ -1,0 +1,21 @@
+{% extends "bbs/base.html" %}
+
+{% block main %}
+
+    <h2>編集画面</h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <select class="form-control" name="category">
+            {% for category in categories %}
+            <option value="{{ category.id }}" {% if category.id == topic.category.id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input class="form-control" type="text" name="name" placeholder="名前" value="{{ topic.name }}">
+        <textarea class="form-control" name="comment" placeholder="コメント">{{ topic.comment }}</textarea>
+        <input class="form-control" type="submit" values="送信">
+    </form>
+
+
+{% endblock %}
