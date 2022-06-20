@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#django-allauth関係。django.contrib.sitesで使用するSITE_IDを指定する
+SITE_ID = 1
+#django-allauthログイン時とログアウト時のリダイレクトURL
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
 
 # Application definition
 
@@ -39,6 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "bbs.apps.BbsConfig",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 ]
 
 MIDDLEWARE = [

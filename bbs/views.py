@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Topic, Category
 from .forms import TopicForm
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         
         context = {}
